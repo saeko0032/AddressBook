@@ -24,6 +24,10 @@
         android:layout_marginEnd="16dp"
         android:layout_weight="1"
         tools:layout="@layout/fragment_contacts" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000" />
     <FrameLayout
         android:id="@+id/rightPaneContainer"
         android:layout_width="0dp"
