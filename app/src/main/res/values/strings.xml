@@ -28,5 +28,5 @@
     <string name="invalid_inser_uri">Invalid insert Uri:</string>
     <string name="invalid_update_uri">Invalid update Uri:</string>
     <string name="invalid_delete_uri">Invalid delete Uri:</string>
-    <string name="invalid_failed">Invalid failed:</string>
+    <string name="insert_failed">Insert failed:</string>
 </resources>

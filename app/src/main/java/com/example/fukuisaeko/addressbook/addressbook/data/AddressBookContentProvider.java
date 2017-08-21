@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
@@ -29,8 +30,23 @@ public class AddressBookContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        int deleteRowId;
+
+        switch (uriMatcher.match(uri)) {
+            case ONE_CONTACT:
+                // content(1st seg)->com.example...(2nd seg)->id(3rd and last seg)
+                String id = uri.getLastPathSegment();
+                deleteRowId = dbHelper.getWritableDatabase().delete(DatabaseDescription.Contact.TABLE_NAME,
+                        DatabaseDescription.Contact._ID + " = " + id, selectionArgs);
+                break;
+            default:
+                throw new SQLException(getContext().getString(R.string.invalid_delete_uri));
+        }
+
+        if (deleteRowId != -1) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return deleteRowId;
     }
 
     @Override
@@ -42,8 +58,29 @@ public class AddressBookContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        // TODO: Implement this to handle requests to insert a new row.
-        throw new UnsupportedOperationException("Not yet implemented");
+        Uri newContact = null;
+
+        switch (uriMatcher.match(uri)) {
+            case CONTACTS :
+                // insert : add new data the end of data
+                // return id value
+                // return value of -1
+                long rowid = dbHelper.getWritableDatabase().insert(
+                        DatabaseDescription.Contact.TABLE_NAME,
+                        null,
+                        values
+                );
+                if (rowid != -1) {
+                    newContact = DatabaseDescription.Contact.buildContactUri(rowid);
+                    getContext().getContentResolver().notifyChange(uri, null);
+                } else {
+                    throw new SQLException(getContext().getString(R.string.insert_failed));
+                }
+                break;
+            default:
+                throw new SQLException(getContext().getString(R.string.insert_failed));
+        }
+        return newContact;
     }
 
     @Override
@@ -82,14 +119,33 @@ public class AddressBookContentProvider extends ContentProvider {
         }
 
         // not execute yet
+        Cursor cursor = queryBuilder.query(dbHelper.getReadableDatabase(),
+                projection, selection, selectionArgs, null, null, sortOrder);
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
-        return null;
+        return cursor;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
-        // TODO: Implement this to handle requests to update one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        int numberOfRowsUpdated;
+        switch (uriMatcher.match(uri)) {
+            case ONE_CONTACT:
+                String id = uri.getLastPathSegment();
+                numberOfRowsUpdated = dbHelper.getWritableDatabase().update(
+                        DatabaseDescription.Contact.TABLE_NAME,
+                        values,
+                        DatabaseDescription.Contact._ID + " = " + id,
+                        selectionArgs);
+                break;
+            default:
+                throw new SQLException(getContext().getString(R.string.invalid_update_uri));
+
+        }
+        if (numberOfRowsUpdated != -1) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return numberOfRowsUpdated;
     }
 }
