@@ -125,42 +125,10 @@ public class DetailFragment extends Fragment
     // delete a contact
     private void deleteContact() {
         // use FragmentManager to display the confirmDelete DialogFragment
-        confirmDelete.show(getFragmentManager(), "confirm delete");
+        MyDialogFragment dialog = new MyDialogFragment();
+        dialog.setTargetFragment(this,0);
+        dialog.show(getFragmentManager(), "confirm delete");
     }
-
-    // DialogFragment to confirm deletion of contact
-    private final DialogFragment confirmDelete =
-            new DialogFragment() {
-                // create an AlertDialog and return it
-                @Override
-                public Dialog onCreateDialog(Bundle bundle) {
-                    // create a new AlertDialog Builder
-                    AlertDialog.Builder builder =
-                            new AlertDialog.Builder(getActivity());
-
-                    builder.setTitle(R.string.confirm_title);
-                    builder.setMessage(R.string.confirm_message);
-
-                    // provide an OK button that simply dismisses the dialog
-                    builder.setPositiveButton(R.string.button_delete,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(
-                                        DialogInterface dialog, int button) {
-
-                                    // use Activity's ContentResolver to invoke
-                                    // delete on the AddressBookContentProvider
-                                    getActivity().getContentResolver().delete(
-                                            contactUri, null, null);
-                                    listener.onContactDeleted(); // notify listener
-                                }
-                            }
-                    );
-
-                    builder.setNegativeButton(R.string.button_cancel, null);
-                    return builder.create(); // return the AlertDialog
-                }
-            };
 
     // called by LoaderManager to create a Loader
     @Override
@@ -214,4 +182,31 @@ public class DetailFragment extends Fragment
     // called by LoaderManager when the Loader is being reset
     @Override
     public void onLoaderReset(Loader<Cursor> loader) { }
+
+    public static class MyDialogFragment extends DialogFragment {
+        static boolean isPositive;
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setTitle(R.string.confirm_title);
+
+            builder.setPositiveButton(R.string.button_delete, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int button) {
+                            ((DetailFragment)getTargetFragment()).delete();
+                        }
+                    }
+            );
+            builder.setNegativeButton(R.string.button_cancel, null);
+
+            return builder.create();
+        }
+    }
+
+    public void delete(){
+        getActivity().getContentResolver().delete(contactUri, null, null);
+        listener.onContactDeleted();
+    }
 }

@@ -24,10 +24,11 @@ public class AddressBookDatabaseHelper extends SQLiteOpenHelper {
         final String CREATE_CONTACTS_TABLE =
                 "CREATE TABLE " + Contact.TABLE_NAME + " ( " +
                         Contact._ID + " integer primary key, " +
-                        Contact.COLUMN_NAME + " TEXT " +
+                        Contact.COLUMN_NAME + " TEXT, " +
                         Contact.COLUMN_PHONE + " TEXT, " +
                         Contact.COLUMN_EMAIL + " TEXT, " +
-                        Contact.COLUMN_CITY+ " TEXT, " +
+                        Contact.COLUMN_CITY + " TEXT, " +
+                        Contact.COLUMN_STREET + " TEXT, " +
                         Contact.COLUMN_STATE + " TEXT, " +
                         Contact.COLUMN_ZIP + " TEXT" + " );";
 

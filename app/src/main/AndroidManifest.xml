@@ -22,9 +22,11 @@
 
         <provider
             android:name=".addressbook.data.AddressBookContentProvider"
-            android:authorities="data"
+            android:authorities="com.example.fukuisaeko.addressbook.addressbook.data"
             android:enabled="true"
-            android:exported="false"></provider>
+            android:exported="false">
+
+        </provider>
     </application>
 
 </manifest>

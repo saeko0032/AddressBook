@@ -27,7 +27,7 @@ public class DatabaseDescription {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_PHONE = "phone";
         public static final String COLUMN_EMAIL = "email";
-        public static final String COLUMN_STREET = "sreet";
+        public static final String COLUMN_STREET = "street";
         public static final String COLUMN_CITY = "city";
         public static final String COLUMN_STATE = "state";
         public static final String COLUMN_ZIP = "zip";

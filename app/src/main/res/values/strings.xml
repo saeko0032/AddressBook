@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Edit</string>
+    <string name="app_name">AddressBook</string>
     <string name="menuitem_edit">Edit</string>
     <string name="menuitem_delete">Delete</string>
     <string name="hint_name_required">Name(Required)</string>
