@@ -53,7 +53,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         View view = inflater.inflate(
                 R.layout.fragment_contacts, container, false);
         RecyclerView recyclerView =
-                (RecyclerView) view.findViewById(R.id.recyclerView);
+                view.findViewById(R.id.recyclerView);
 
         // recyclerView should display items in a vertical list
         recyclerView.setLayoutManager(
@@ -132,7 +132,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
                         null, // null projection returns all columns
                         null, // null selection returns all rows
                         null, // no selection arguments
-                        Contact.COLUMN_NAME + " COLLATE NOCASE ASC"); // sort order
+                        Contact.COLUMN_NAME + " COLLATE NO CASE ASC"); // sort order
             default:
                 return null;
         }

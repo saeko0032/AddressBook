@@ -184,7 +184,6 @@ public class DetailFragment extends Fragment
     public void onLoaderReset(Loader<Cursor> loader) { }
 
     public static class MyDialogFragment extends DialogFragment {
-        static boolean isPositive;
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
