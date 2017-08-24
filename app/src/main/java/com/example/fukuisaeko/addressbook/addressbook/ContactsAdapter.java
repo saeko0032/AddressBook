@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.fukuisaeko.addressbook.R;
-import com.example.fukuisaeko.addressbook.addressbook.data.DatabaseDescription;
+import com.example.fukuisaeko.addressbook.addressbook.data.DatabaseDescription.Contact;
 
 /**
  * Created by fukuisaeko on 2017-08-16.
  */
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder> {
+public class ContactsAdapter
+        extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
     // interface implemented by ContactsFragment to respond
     // when the user touches an item in the RecyclerView
@@ -26,12 +27,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
     // nested subclass of RecyclerView.ViewHolder used to implement
     // the view-holder pattern in the context of a RecyclerView
-    public class ContactsViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView textView;
         private long rowID;
 
         // configures a RecyclerView item's ViewHolder
-        public ContactsViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(android.R.id.text1);
 
@@ -41,7 +42,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                         // executes when the contact in this ViewHolder is clicked
                         @Override
                         public void onClick(View view) {
-                            clickListener.onClick(DatabaseDescription.Contact.buildContactUri(rowID));
+                            clickListener.onClick(Contact.buildContactUri(rowID));
                         }
                     }
             );
@@ -64,20 +65,20 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
     // sets up new list item and its ViewHolder
     @Override
-    public ContactsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // inflate the android.R.layout.simple_list_item_1 layout
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 android.R.layout.simple_list_item_1, parent, false);
-        return new ContactsViewHolder(view); // return current item's ViewHolder
+        return new ViewHolder(view); // return current item's ViewHolder
     }
 
     // sets the text of the list item to display the search tag
     @Override
-    public void onBindViewHolder(ContactsViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         cursor.moveToPosition(position);
-        holder.setRowID(cursor.getLong(cursor.getColumnIndex(DatabaseDescription.Contact._ID)));
+        holder.setRowID(cursor.getLong(cursor.getColumnIndex(Contact._ID)));
         holder.textView.setText(cursor.getString(cursor.getColumnIndex(
-                DatabaseDescription.Contact.COLUMN_NAME)));
+                Contact.COLUMN_NAME)));
     }
 
     // returns the number of items that adapter binds
